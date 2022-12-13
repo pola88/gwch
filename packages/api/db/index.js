@@ -1,5 +1,4 @@
 import sqlite3 from 'sqlite3';
-import fs from 'fs';
 import csvtojsonV2 from 'csvtojson';
 
 const dbName = 'guidwheel.db';
@@ -10,6 +9,11 @@ export const db = new sqlite3.Database(`build/${dbName}`, sqlite3.OPEN_READWRITE
     throw err
   }
 });
+
+export const findDevice = (deviceName) => {
+  const selectDevice = `SELECT id from devices where name = ?;`
+  return execSelect(selectDevice, [deviceName]);
+};
 
 export const execSelect = (query, params = []) => {
   return new Promise( (resolve, reject) => {
@@ -53,7 +57,6 @@ export const loadData = () => {
           avg FLOAT,
           max FLOAT,
           min FLOAT,
-          type STRING,
           CONSTRAINT fk_device_id
             FOREIGN KEY (device_id)
             REFERENCES devices(id)
@@ -63,11 +66,10 @@ export const loadData = () => {
       const rows = await csvtojsonV2().fromFile('demoPumpDayData.csv');
       for(let row of rows) {
         const { deviceid, metrics, fromts, tots } = row; 
-        const selectDevice = `SELECT id from devices where name = ?;`
-        let device = await execSelect(selectDevice, [deviceid]);
+        let device = await findDevice(deviceid);
         if (!device) {
           await execRun("INSERT INTO devices (name) VALUES (?)", [deviceid]);
-          device = await execSelect(selectDevice, [deviceid])
+          device = await findDevice(deviceid);
         }
         const parsedMetrics = JSON.parse(metrics);
         for (let metric in parsedMetrics) {

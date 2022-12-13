@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import devicesRoutes from "./routes/devices";
+import metricsRoutes from "./routes/metrics";
 import { loadData } from './db/index.js';
 
 const fastify: FastifyInstance = Fastify({
@@ -21,6 +22,7 @@ const fastify: FastifyInstance = Fastify({
 });
 
 fastify.register(devicesRoutes);
+fastify.register(metricsRoutes, { prefix: '/devices/:id'});
 
 const start = async () => {
   try {

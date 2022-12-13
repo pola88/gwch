@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
-import rootRoutes from "./routes/root";
+import devicesRoutes from "./routes/devices";
+import { loadData } from './db/index.js';
 
 const fastify: FastifyInstance = Fastify({
   logger: {
@@ -19,9 +20,11 @@ const fastify: FastifyInstance = Fastify({
   },
 });
 
-fastify.register(rootRoutes);
+fastify.register(devicesRoutes);
+
 const start = async () => {
   try {
+    await loadData();
     await fastify.listen({ port: 3000 });
   } catch (err) {
     fastify.log.error(err);

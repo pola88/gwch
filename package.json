@@ -4,7 +4,13 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "lint": "lerna run lint --stream --parallel"
+  },
   "devDependencies": {
     "lerna": "^6.1.0"
+  },
+  "dependencies": {
+    "eslint": "^8.29.0"
   }
 }

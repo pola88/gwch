@@ -1,28 +1,26 @@
-import { SET_METRIC, ADD_CHART, REMOVE_CHART, Chart, SelectedMetrics } from './chartActions';
+import { setMetrics, addChart, removeChart, SelectedMetrics, Charts } from './chartActions';
+import { createReducer } from '@reduxjs/toolkit'
 
-type ChartActions = {
-  type: typeof SET_METRIC | typeof ADD_CHART | typeof REMOVE_CHART,
-  metrics: SelectedMetrics
-  chart: Chart,
-  chartId: Number
-}
-
-type ChartSate = {
+type State = {
   selectedMetrics: SelectedMetrics;
-  charts: Chart[];
+  charts: Charts;
 };
 
-const chartReducer = (state: ChartSate = { selectedMetrics: {}, charts: [] } , action: ChartActions) => {
-  switch(action.type){
-    case "SET_METRIC":
-      return {...state, selectedMetrics: action.metrics };
-    case "ADD_CHART":
-      return {...state, charts: [...state.charts, action.chart], selectedMetrics: [] };
-    case "REMOVE_CHART":
-      return {...state };
-    default: 
-      return state
-  }
-}
+const initialState = { selectedMetrics: {}, charts: {} } as State;
+
+const chartReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(setMetrics, (state, action) => {
+      state.selectedMetrics = action.payload;
+    })
+    .addCase(addChart, (state, action) => {
+      const newChart = action.payload;
+      state.charts[newChart.id.toString()] = newChart
+    })
+    .addCase(removeChart, (state, action) => {
+      const removedChart: Charts = state.charts;
+      delete removedChart[action.payload.toString()];
+    })
+});
 
 export default chartReducer

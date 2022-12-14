@@ -1,20 +1,11 @@
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
-import { setMetrics, SelectedMetrics, addChart, Chart, ChartMetric, removeChart } from './chartActions';
+import { setMetrics, SelectedMetrics, addChart, Chart,
+         Charts, ChartMetric, removeChart } from './chartActions';
 import { groupBy } from 'ramda';
+import { useCallback } from "react";
 
-// type Metric = {
-//   id: Number,
-//   device_id: Number,
-//   metric_name: String,
-//   fromts: String,
-//   tots: String,
-//   avg: Number,
-//   max: Number,
-//   min: Number
-// }
-
-const metrics = [
+const availableMetrics = [
   'F',
   'I1',
   'I2',
@@ -45,11 +36,34 @@ const metrics = [
 ];
 
 type UseChart = {
-  charts: Chart[],
-  deleteChart: (id: number) => void,
+  deleteChart: (id: Number) => void,
+  charts: Charts,
   addMetrics: (metrics: any[]) => void,
   createChart: () => void,
   metrics: string[]
+};
+
+
+const generateDatapoints = (currentMetrics: any): ChartMetric[] => {
+  const groupByName = groupBy( ({metric_name}: { metric_name: string}) => {
+    return metric_name;
+  });
+
+  const dataPoints: ChartMetric[] = [];
+  const groupedMetrics: any = groupByName(currentMetrics);
+  for (let metricName in groupedMetrics) {
+    const metrics = groupedMetrics[metricName];
+    const dataPoint: ChartMetric = {
+      type: "spline",
+      name: metricName,
+      showInLegend: true,
+      dataPoints: metrics.map( (metric: any) => ({ y: metric.max, label: metric.fromts, x: new Date(metric.fromts) }))
+    }
+
+    dataPoints.push(dataPoint);
+  }
+
+  return dataPoints;
 };
 
 const useChart = (): UseChart => {
@@ -58,7 +72,7 @@ const useChart = (): UseChart => {
   const { selectedMetrics, charts } = useAppSelector( state => state.chart );
   const { from, to } = useAppSelector( state => state.date )
 
-  const addMetrics = (metrics: any[]) => {    
+  const addMetrics = useCallback((metrics: any[]) => {
     let newSelectedMetrics: SelectedMetrics = {};
     for (let metric of metrics) {
       if (metric.indexOf('-') !== -1) {
@@ -74,9 +88,9 @@ const useChart = (): UseChart => {
     };
 
     dispatch(setMetrics(newSelectedMetrics));
-  };
+  }, [dispatch]);
 
-  const createChart = async () => {
+  const createChart = useCallback(async () => {
     const data = {
       from: from.toISOString(),
       to: to.toISOString(),
@@ -92,41 +106,25 @@ const useChart = (): UseChart => {
     });
 
     const { metrics } = await response.json();
-    const groupByName = groupBy( ({metric_name}: { metric_name: string}) => {
-      return metric_name;
-    })
-    const groupedMetrics: any = groupByName(metrics);
-    const dataPoints: ChartMetric[] = [];
-    for (let metricName in groupedMetrics) {
-      const metrics = groupedMetrics[metricName];
-      const dataPoint: ChartMetric = {
-        type: "spline",
-        name: metricName,
-        showInLegend: true,
-        dataPoints: metrics.map( (metric: any) => ({ y: metric.max, label: metric.fromts }))
-      }
-
-      dataPoints.push(dataPoint);
-    }
-
+    const dataPoints: ChartMetric[] = generateDatapoints(metrics);
     const chart: Chart = {
       id: Math.floor(Date.now() / 1000),
       metrics: dataPoints,
     };
 
     dispatch(addChart(chart));
-  }
+  }, [from, to, selectedMetrics, selected, dispatch]);
 
-  const deleteChart = (id: number) => {
+  const deleteChart = useCallback((id: Number) => {
     dispatch(removeChart(id));
-  }
+  }, [dispatch]);
 
   return {
     charts,
     deleteChart,
     createChart,
     addMetrics,
-    metrics
+    metrics: availableMetrics
   }
 };
 

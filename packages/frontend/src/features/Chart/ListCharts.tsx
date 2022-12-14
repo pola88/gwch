@@ -5,8 +5,13 @@ import Chart from './Chart';
 
 const ListCharts = () => {
   const { charts } = useChart();
-
-  const currentCharts = charts.map( (chart) => (<Chart key={`${chart.id}`} chart={chart}/>));
+  
+  const currentCharts = [];
+  for (let chart in charts) {
+    const currentChart = charts[chart];
+    currentCharts.push(<Chart key={`${currentChart.id}`} chart={currentChart}/>)
+  }
+  
   return (
     <>
       {currentCharts}

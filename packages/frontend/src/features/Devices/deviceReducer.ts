@@ -1,25 +1,21 @@
-import { ADD_DEVICES, Device, SELECT_DEVICE } from './deviceActions';
-
-type DeviceActions = {
-  type: typeof ADD_DEVICES | typeof SELECT_DEVICE,
-  devices: Device[],
-  device: Device
-}
+import { setDevices, Device, setDevice } from './deviceActions';
+import { createReducer } from '@reduxjs/toolkit'
 
 type DeviceSate = {
   all: Device[];
   selected: string | null;
 };
 
-const devicesReducer = (state: DeviceSate = { all: [], selected: null } , action: DeviceActions) => {
-  switch(action.type){
-    case "ADD_DEVICES":
-      return {...state, all: action.devices };
-    case "SELECT_DEVICE":
-      return {...state, selected: action.device };
-    default: 
-      return state
-  }
-}
+const initialState = { all: [], selected: null } as DeviceSate;
+
+const devicesReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(setDevices, (state, action) => {
+      state.all = action.payload;
+    })
+    .addCase(setDevice, (state, action) => {
+      state.selected = action.payload;
+    });
+});
 
 export default devicesReducer

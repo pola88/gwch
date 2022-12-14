@@ -1,3 +1,4 @@
+import { createAction } from '@reduxjs/toolkit'
 export const ADD_DEVICES = 'ADD_DEVICES';
 export const SELECT_DEVICE = 'SELECT_DEVICE';
 
@@ -6,5 +7,5 @@ export type Device = {
   name: string;
 }
 
-export const setDevices = (devices: Device[]) => ({ type: ADD_DEVICES, devices } );
-export const setDevice = (device: string | null) => ({ type: SELECT_DEVICE, device } );
+export const setDevices = createAction<Device[]>(ADD_DEVICES);
+export const setDevice = createAction<string | null>(SELECT_DEVICE);

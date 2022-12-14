@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'rsuite/DatePicker';
 import Label from '../Label/Label';
-import { useDispatch } from 'react-redux'
 import useDate from './useDate';
 import styled from 'styled-components';
 
@@ -14,8 +13,6 @@ const DatePickerContainer = styled.div`
 const datePickerFormat = "yyyy-MM-dd HH:mm";
 const SelectDate = () => {
   const { currentDates, updateDates } = useDate();
-  const dispatch = useDispatch();
-  
 
   const onChange = (date: Date | null, direction: string) => {
     updateDates({

@@ -12,7 +12,8 @@ export const FindAndParseMetrics = async ({deviceId, from, to, metrics}: FindAnd
       WHERE device_id = ?
         AND metric_name IN (${placeholders})
         AND fromts >= ?
-        AND tots <= ?;`
+        AND tots <= ?
+        order by fromts;`
     , [deviceId, ...metricsName, from, to]);
   return allMetrics;
 };

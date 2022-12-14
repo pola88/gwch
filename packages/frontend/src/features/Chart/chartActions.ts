@@ -1,3 +1,5 @@
+import { createAction } from '@reduxjs/toolkit'
+
 export const SET_METRIC = 'SET_METRIC';
 export const ADD_CHART = 'ADD_CHART';
 export const REMOVE_CHART = 'REMOVE_CHART';
@@ -22,6 +24,10 @@ export type Chart = {
   metrics: ChartMetric[];
 }
 
-export const setMetrics = (metrics: SelectedMetrics) => ({ type: SET_METRIC, metrics } );
-export const addChart = (chart: Chart) => ({ type: ADD_CHART, chart } );
-export const removeChart = (chartId: Number) => ({ type: ADD_CHART, chartId } );
+export type Charts = {
+  [id: string]: Chart
+}
+
+export const setMetrics = createAction<SelectedMetrics>(SET_METRIC)
+export const addChart = createAction<Chart>(ADD_CHART);
+export const removeChart = createAction<Number>(REMOVE_CHART);

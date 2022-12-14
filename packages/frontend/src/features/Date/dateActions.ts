@@ -1,3 +1,4 @@
+import { createAction } from '@reduxjs/toolkit'
 export const UPDATE_DATES = 'UPDATE_DATES';
 
 export type DateRanges = {
@@ -5,4 +6,4 @@ export type DateRanges = {
   from: Date;
 };
 
-export const setDates = ({to, from}: DateRanges) => ({ type: UPDATE_DATES, to, from } );
+export const setDates = createAction<DateRanges>(UPDATE_DATES)

@@ -11,11 +11,12 @@ const reducer = combineReducers({
 
 export const store = configureStore({
   reducer,
-   middleware: [
-      ...getDefaultMiddleware({
-          serializableCheck: false
-      }),
-    ],
+  middleware: [
+    ...getDefaultMiddleware({
+        serializableCheck: false
+    }),
+    
+  ],
 });
 
 export type AppDispatch = typeof store.dispatch;

@@ -4,6 +4,7 @@ import csvtojsonV2 from 'csvtojson';
 const dbName = 'guidwheel.db';
 export const db = new sqlite3.Database(`build/${dbName}`, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
   if (err) {
+    // eslint-disable-next-line no-undef
     console.error('Getting error ' + err);
     throw err
   }

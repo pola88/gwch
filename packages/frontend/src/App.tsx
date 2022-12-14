@@ -1,58 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Container, Header, Content, Footer, Sidebar } from 'rsuite';
+import SelectDate from './features/Date/SelectDate';
+import SelectDevice from './features/Devices/SelectDevice';
+import NewChart from './features/Chart/NewChart';
+import 'rsuite/dist/rsuite.min.css';
+import styled from 'styled-components';
+import ListCharts from './features/Chart/ListCharts';
 
-function App() {
+const StyledSidebar = styled(Sidebar)`
+  padding-left: 24px;
+  padding-top: 24px;
+  margin-right: 24px;
+  height: 100vh;
+  box-shadow: 10px 0 5px -8px rgba(0,0,0,0.1);
+`;
+
+const StyledContent = styled(Content)`
+  margin-top: 24px;
+`
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Container>
+      <StyledSidebar>
+        <SelectDevice />
+        <SelectDate/>
+      </StyledSidebar>
+      <Container>
+        <StyledContent>
+          <NewChart />
+          <ListCharts />
+        </StyledContent>
+      </Container>
+    </Container>
   );
 }
-
-export default App;

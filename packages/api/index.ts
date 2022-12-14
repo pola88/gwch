@@ -1,7 +1,8 @@
 import Fastify, { FastifyInstance } from "fastify";
+import cors from '@fastify/cors';
 import devicesRoutes from "./routes/devices";
 import metricsRoutes from "./routes/metrics";
-import { loadData } from './db/index.js';
+// import { loadData } from './db/index.js';
 
 const fastify: FastifyInstance = Fastify({
   logger: {
@@ -21,12 +22,13 @@ const fastify: FastifyInstance = Fastify({
   },
 });
 
+fastify.register(cors);
 fastify.register(devicesRoutes);
 fastify.register(metricsRoutes, { prefix: '/devices/:id'});
 
 const start = async () => {
   try {
-    await loadData();
+    // await loadData();
     await fastify.listen({ port: 3000 });
   } catch (err) {
     fastify.log.error(err);

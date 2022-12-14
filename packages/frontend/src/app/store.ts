@@ -1,10 +1,21 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
+import deviceReducer from '../features/Devices/deviceReducer';
+import dateReducer from '../features/Date/dateReducer';
+import chartReducer from '../features/Chart/chartReducer';
+
+const reducer = combineReducers({
+  devices: deviceReducer,
+  date: dateReducer,
+  chart: chartReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+  reducer,
+   middleware: [
+      ...getDefaultMiddleware({
+          serializableCheck: false
+      }),
+    ],
 });
 
 export type AppDispatch = typeof store.dispatch;

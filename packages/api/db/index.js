@@ -2,7 +2,6 @@ import sqlite3 from 'sqlite3';
 import csvtojsonV2 from 'csvtojson';
 
 const dbName = 'guidwheel.db';
-
 export const db = new sqlite3.Database(`build/${dbName}`, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
   if (err) {
     console.error('Getting error ' + err);
@@ -52,8 +51,8 @@ export const loadData = () => {
           id INTEGER PRIMARY KEY,
           device_id INTEGER NOT NULL,
           metric_name STRING,
-          fromts FLOAT,
-          tots FLOAT,
+          fromts DATETIME,
+          tots DATETIME,
           avg FLOAT,
           max FLOAT,
           min FLOAT,
@@ -77,8 +76,8 @@ export const loadData = () => {
           const values = [
             device.id,
             metric,
-            fromts,
-            tots,
+            new Date(Number(fromts)).toISOString(),
+            new Date(Number(tots)).toISOString(),
             avgvalue,
             maxvalue,
             minvalue

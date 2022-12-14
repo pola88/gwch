@@ -59,3 +59,4 @@ profile*
 
 build
 db/*.db
+*.db

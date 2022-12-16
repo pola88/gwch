@@ -8,12 +8,13 @@ type UseDevice = {
   selectDevice: (device: string | null) => void,
   loading: boolean;
   devices: Device[];
+  selectedDevice: string | null
 };
 
 const useDevice = (): UseDevice => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { all: devices } = useAppSelector( state => state.devices );
+  const { all: devices, selected } = useAppSelector( state => state.devices );
 
   const fetchDevices = useCallback( async () => {
     setLoading(true);
@@ -28,6 +29,7 @@ const useDevice = (): UseDevice => {
   };
 
   return {
+    selectedDevice: selected,
     fetchDevices,
     selectDevice,
     devices,

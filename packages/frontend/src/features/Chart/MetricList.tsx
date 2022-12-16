@@ -36,7 +36,11 @@ const renderValue = (values: any[], items: any) => {
   );
 };
 
-const SelectMetrics = () => {
+type SelectMetricsProps = {
+  disabled: boolean;
+};
+
+const SelectMetrics = ({disabled}: SelectMetricsProps) => {
   const { metrics, addMetrics } = useChart();
   const data = metrics.map( metric => createData(metric));
   
@@ -48,6 +52,7 @@ const SelectMetrics = () => {
         style={{ width: 300}}
         onChange={addMetrics}
         renderValue={renderValue}
+        disabled={disabled}
       />
     </MetricContainer>
   </>

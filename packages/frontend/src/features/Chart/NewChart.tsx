@@ -2,6 +2,7 @@ import React from "react";
 import { ButtonGroup, Button } from 'rsuite';
 import styled from "styled-components";
 
+import useDevice from '../Devices/useDevices';
 import MetricList from './MetricList';
 import useChart from "./useChart";
 
@@ -21,15 +22,18 @@ const StyledDiv = styled.div`
 
 const NewChart = () => {
   const { createChart } = useChart();
+  const { selectedDevice } = useDevice();
+
   return (
     <StyledDiv>
       <StyleTitleContainer>
         <h4>Reports</h4>
       </StyleTitleContainer>
-      <MetricList />
+      <div>Select a device to add new charts</div>
+      <MetricList disabled={!selectedDevice}/>
       <ButtonContainer>
         <ButtonGroup>
-          <Button onClick={() => createChart()}>Add Chart</Button>
+          <Button disabled={!selectedDevice} onClick={() => createChart()}>Add Chart</Button>
         </ButtonGroup>
       </ButtonContainer>
     </StyledDiv>

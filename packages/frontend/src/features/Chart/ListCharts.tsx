@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack} from 'rsuite';
+import { Stack } from 'rsuite';
 
 import useChart from "./useChart";
 import Chart from './Chart';

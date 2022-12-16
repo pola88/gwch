@@ -6,6 +6,7 @@ import NewChart from './features/Chart/NewChart';
 import 'rsuite/dist/rsuite.min.css';
 import styled from 'styled-components';
 import ListCharts from './features/Chart/ListCharts';
+import DeviceState from './features/State/DeviceState';
 
 const StyledSidebar = styled(Sidebar)`
   padding-left: 24px;
@@ -20,9 +21,6 @@ const StyledDiv = styled.div`
 	overflow-y: scroll;
 `;
 
-const StyledContent = styled(Content)`
-  margin-top: 24px;
-`
 
 export default function App() {
   return (
@@ -34,6 +32,7 @@ export default function App() {
       <Container>
         <NewChart />
         <StyledDiv>
+          <DeviceState />
           <ListCharts />
         </StyledDiv>
       </Container>

@@ -76,7 +76,7 @@ const useChart = (): UseChart => {
   const dispatch = useDispatch();
   const { selected } = useAppSelector( state => state.devices );
   const { selectedMetrics, charts } = useAppSelector( state => state.chart );
-  const { from, to } = useAppSelector( state => state.date )
+  const { currentDates } = useAppSelector( state => state.date )
 
   const addMetrics = useCallback((metrics: any[]) => {
     let newSelectedMetrics: SelectedMetrics = {};
@@ -98,8 +98,8 @@ const useChart = (): UseChart => {
 
   const createChart = useCallback(async () => {
     const data = {
-      from: from.toISOString(),
-      to: to.toISOString(),
+      from: currentDates.from.toISOString(),
+      to: currentDates.to.toISOString(),
       metrics: selectedMetrics
     };
 
@@ -119,7 +119,7 @@ const useChart = (): UseChart => {
     };
 
     dispatch(addChart(chart));
-  }, [from, to, selectedMetrics, selected, dispatch]);
+  }, [currentDates, selectedMetrics, selected, dispatch]);
 
   const deleteChart = useCallback((id: Number) => {
     dispatch(removeChart(id));

@@ -1,20 +1,28 @@
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../../app/hooks';
-import { setDevices, setDevice, Device } from './deviceActions';
+import { setDevices, setDevice, Device, setDeviceState, State} from './deviceActions';
+import { DateRanges } from '../Date/dateActions';
+
+type GetDeviceStateParams = {
+  selectedDevice: string | null;
+  currentDates: DateRanges;
+};
 
 type UseDevice = {
-  fetchDevices: () => void,
-  selectDevice: (device: string | null) => void,
+  getDeviceState: (params: GetDeviceStateParams) => Promise<void>;
+  fetchDevices: () => void;
+  selectDevice: (device: string | null) => void;
   loading: boolean;
   devices: Device[];
-  selectedDevice: string | null
+  selectedDevice: string | null,
+  deviceState: State[]
 };
 
 const useDevice = (): UseDevice => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { all: devices, selected } = useAppSelector( state => state.devices );
+  const { all: devices, selected, deviceState } = useAppSelector( state => state.devices );
 
   const fetchDevices = useCallback( async () => {
     setLoading(true);
@@ -28,7 +36,20 @@ const useDevice = (): UseDevice => {
     dispatch(setDevice(device));
   };
 
+  const getDeviceState = useCallback(async ({ selectedDevice, currentDates }: GetDeviceStateParams) => {
+    const queries = new URLSearchParams({
+      from: currentDates.from.toISOString(),
+      to: currentDates.to.toISOString()
+    });
+
+    const response = await fetch(`http://localhost:3000/devices/${selectedDevice}/state?${queries}`);
+    const { states } = await response.json();
+    dispatch(setDeviceState(states));
+  },[dispatch]);
+
   return {
+    deviceState,
+    getDeviceState,
     selectedDevice: selected,
     fetchDevices,
     selectDevice,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content, Sidebar } from 'rsuite';
+import { Container, Content, Sidebar,Header } from 'rsuite';
 import SelectDate from './features/Date/SelectDate';
 import SelectDevice from './features/Devices/SelectDevice';
 import NewChart from './features/Chart/NewChart';
@@ -10,9 +10,14 @@ import ListCharts from './features/Chart/ListCharts';
 const StyledSidebar = styled(Sidebar)`
   padding-left: 24px;
   padding-top: 24px;
-  margin-right: 24px;
+  margin-right: 5px;
   height: 100vh;
-  box-shadow: 10px 0 5px -8px rgba(0,0,0,0.1);
+  border-right: solid 1px rgba(0,0,0,0.1);
+`;
+
+const StyledDiv = styled.div`
+  height: 80vh;
+	overflow-y: scroll;
 `;
 
 const StyledContent = styled(Content)`
@@ -27,10 +32,10 @@ export default function App() {
         <SelectDate/>
       </StyledSidebar>
       <Container>
-        <StyledContent>
-          <NewChart />
+        <NewChart />
+        <StyledDiv>
           <ListCharts />
-        </StyledContent>
+        </StyledDiv>
       </Container>
     </Container>
   );

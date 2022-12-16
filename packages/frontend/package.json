@@ -48,6 +48,7 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/parser": "^5.46.1",
     "immer": "^9.0.16",
+    "moment": "^2.29.4",
     "ramda": "^0.28.0",
     "rsuite": "^5.23.2",
     "styled-components": "^5.3.6"

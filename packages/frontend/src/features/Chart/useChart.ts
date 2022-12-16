@@ -4,6 +4,7 @@ import { setMetrics, SelectedMetrics, addChart, Chart,
          Charts, ChartMetric, removeChart } from './chartActions';
 import { groupBy } from 'ramda';
 import { useCallback } from "react";
+import moment from 'moment';
 
 const availableMetrics = [
   'F',
@@ -43,6 +44,11 @@ type UseChart = {
   metrics: string[]
 };
 
+const parseMetric = (metric: any) => ({
+  y: metric.max,
+  label: moment(metric.fromts).format('MM/DD/YYYY hh:mm'),
+  x: new Date(metric.fromts)
+});
 
 const generateDatapoints = (currentMetrics: any): ChartMetric[] => {
   const groupByName = groupBy( ({metric_name}: { metric_name: string}) => {
@@ -57,7 +63,7 @@ const generateDatapoints = (currentMetrics: any): ChartMetric[] => {
       type: "spline",
       name: metricName,
       showInLegend: true,
-      dataPoints: metrics.map( (metric: any) => ({ y: metric.max, label: metric.fromts, x: new Date(metric.fromts) }))
+      dataPoints: metrics.map(parseMetric)
     }
 
     dataPoints.push(dataPoint);
@@ -108,7 +114,7 @@ const useChart = (): UseChart => {
     const { metrics } = await response.json();
     const dataPoints: ChartMetric[] = generateDatapoints(metrics);
     const chart: Chart = {
-      id: Math.floor(Date.now() / 1000),
+      id: Date.now().valueOf(),
       metrics: dataPoints,
     };
 

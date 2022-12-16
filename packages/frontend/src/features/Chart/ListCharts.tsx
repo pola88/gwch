@@ -10,8 +10,8 @@ const ListCharts = () => {
   const currentCharts = [];
   for (let chart in charts) {
     const currentChart = charts[chart];
-    currentCharts.push(<Stack.Item style={{width: '90%', marginTop: '24px'}}>
-      <Chart key={`${currentChart.id}`} chart={currentChart}/>
+    currentCharts.push(<Stack.Item key={`${currentChart.id}`}  style={{width: '90%', marginTop: '24px'}}>
+      <Chart chart={currentChart}/>
     </Stack.Item>);
   }
   

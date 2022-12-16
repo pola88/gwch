@@ -15,9 +15,9 @@ const createData = (name: string) => ({
   value: name,
   label: name,
   children: [
-    {value: `${name}-avgvalue`, label: 'Average'},
-    {value: `${name}-maxvalue`, label: 'Max'},
-    {value: `${name}-minvalue`, label: 'Min'}
+    {value: `${name}-avg`, label: 'Average'},
+    {value: `${name}-max`, label: 'Max'},
+    {value: `${name}-min`, label: 'Min'}
   ]
 });
 

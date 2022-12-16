@@ -9,7 +9,7 @@
   "scripts": {
     "test": "tap \"test/**/*.test.js\"",
     "start": "npm run clean && tsc && npm run copy-db && node build/index.js",
-    "create-db": "node db/create_db.js",
+    "create-db": "CREATING_DB=true babel-node --presets @babel/preset-env db/create_db.js",
     "copy-db": "cp guidwheel.db ./build",
     "clean": "rm -rf build",
     "dev": "fastify start -w -l info -P app.js",
@@ -28,6 +28,10 @@
     "sqlite3": "^5.1.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.5",
+    "@babel/node": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
     "@fastify/cors": "^8.2.0",
     "@typescript-eslint/parser": "^5.46.1",
     "tap": "^16.1.0",

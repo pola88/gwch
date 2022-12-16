@@ -1,10 +1,10 @@
 import sqlite3 from 'sqlite3';
 import csvtojsonV2 from 'csvtojson';
 
-const dbName = 'guidwheel.db';
-export const db = new sqlite3.Database(`build/${dbName}`, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+const creatingDb = process.env.CREATING_DB;
+const dbRoot = creatingDb ? 'guidwheel.db' : 'build/guidwheel.db';
+export const db = new sqlite3.Database(dbRoot, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
   if (err) {
-    // eslint-disable-next-line no-undef
     console.error('Getting error ' + err);
     throw err
   }
@@ -43,6 +43,7 @@ const execRun = (query, params = []) => {
 }
 
 export const loadData = () => {
+  console.log('Loading data');
   return new Promise( (resolve) => {
     db.serialize(async () => {
       // Create a table
@@ -64,6 +65,7 @@ export const loadData = () => {
         )
       `);
       const rows = await csvtojsonV2().fromFile('demoPumpDayData.csv');
+      console.log(`Adding ${rows.length} rows`);
       for(let row of rows) {
         const { deviceid, metrics, fromts, tots } = row; 
         let device = await findDevice(deviceid);

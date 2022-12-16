@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content, Sidebar,Header } from 'rsuite';
+import { Container, Sidebar } from 'rsuite';
 import SelectDate from './features/Date/SelectDate';
 import SelectDevice from './features/Devices/SelectDevice';
 import NewChart from './features/Chart/NewChart';
